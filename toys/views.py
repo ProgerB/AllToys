@@ -3,4 +3,4 @@ from django.http import HttpResponse
 
 
 def dashboard(request):
-    return HttpResponse("Welcome to AllToys!")
+    return render(request, "dashboard.html")
