@@ -5,6 +5,48 @@
     <title>Index</title>
 </head>
 <body>
-    Hi there!
+    <h1 align="center">Users</h1>
+    <table align="center" bordercolor="green" border="1" cellspacing="0" cellspacing="10" width="300">
+        <thead>
+           <tr>
+               <th>First name</th>
+               <th>Last name</th>
+               <th>Age</th>
+           </tr>
+        </thead>
+        <tbody>
+        {% for user in Users %}
+            <tr align="center">
+                <td>{{ user.first_name }}</td>
+                <td>{{ user.last_name }}</td>
+                <td>{{ user.age }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+    <h1 align="center">Toys</h1>
+    <table align="center" bordercolor="green" border="1" cellspacing="0" cellspacing="10" width="300">
+        <thead>
+           <tr>
+               <th>Name</th>
+               <th>User</th>
+
+           </tr>
+        </thead>
+        <tbody>
+        {% for toy in Toys %}
+            <tr align="center">
+                <td>{{ toy.name }}</td>
+                <td>{{ toy.user }}</td>
+
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+
+
 </body>
 </html>
