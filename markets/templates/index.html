@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>Markets</div>
+    {% for market in markets %}
+        <a href="{% url "market_detail" market.id %}">{{ market.name }}</a>
+    {% endfor %}
+</body>
+</html>

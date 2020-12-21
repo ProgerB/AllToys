@@ -5,6 +5,13 @@ class ActiveObjectManager(models.Manager):
     def get_queryset(self):
         return super().get_queryset().filter(is_active=True)
 
+#
+# class BaseModel(models.Model):
+#     is_active = models.BooleanField(default=True)
+#
+#     class Meta:
+#         abstract = True
+
 
 class Address(models.Model):
     street = models.CharField(max_length=100)
@@ -44,6 +51,7 @@ class Toy(models.Model):
     user = models.ForeignKey(User, related_name="toys", on_delete=models.CASCADE, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     tags = models.ManyToManyField(Tag, related_name="toys")
+    price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

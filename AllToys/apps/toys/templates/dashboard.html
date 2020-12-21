@@ -5,7 +5,11 @@
     <title>Index</title>
 </head>
 <body>
+
     <h1 align="center">Users</h1>
+    <a href="{% url 'toys' %}">Toys</a>
+
+    
     <table align="center" bordercolor="green" border="1" cellspacing="0" cellspacing="10" width="300">
         <thead>
            <tr>
@@ -15,7 +19,7 @@
            </tr>
         </thead>
         <tbody>
-        {% for user in Users %}
+        {% for user in users %}
             <tr align="center">
                 <td>{{ user.first_name }}</td>
                 <td>{{ user.last_name }}</td>
@@ -32,21 +36,33 @@
            <tr>
                <th>Name</th>
                <th>User</th>
-
            </tr>
         </thead>
         <tbody>
-        {% for toy in Toys %}
+        {% for toy in toys %}
             <tr align="center">
                 <td>{{ toy.name }}</td>
                 <td>{{ toy.user }}</td>
-
             </tr>
         {% endfor %}
+
         </tbody>
     </table>
 
 
+
+<div>
+
+</div>
+  <div>
+    <table>
+      <tr>
+        <td style="width: 100px"><a href="{% url "toys" %}">Toys</a></td>
+          <td style="width: 100px"><a href="#">Users</a></td>
+      </tr>
+    </table>
+    <hr>
+  </div>
 
 </body>
 </html>
