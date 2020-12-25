@@ -16,7 +16,12 @@
       </tr>
     </table>
     <hr>
-    <div>{{ market.name }}</div>
+
+{% for market in markets %}
+        <div>{{ market.name }}</div>
+        <div>{{ market.address }}</div>
+{% endfor %}
+
   </div>
 
 </body>

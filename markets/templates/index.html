@@ -6,7 +6,7 @@
 </head>
 <body>
     <div>Markets</div>
-    {% for market in markets %}
+    {% for market in object_list %}
         <a href="{% url "market_detail" market.id %}">{{ market.name }}</a>
     {% endfor %}
 </body>

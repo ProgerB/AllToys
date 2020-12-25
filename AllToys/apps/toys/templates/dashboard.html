@@ -7,7 +7,15 @@
 <body>
 
     <h1 align="center">Users</h1>
-    <a href="{% url 'toys' %}">Toys</a>
+
+        <table>
+      <tr>
+        <td style="width: 100px"><a href="{% url "toys" %}">Toys</a></td>
+          <td style="width: 100px"><a href="{% url 'market_list' %}">Markets</a></td>
+      </tr>
+    </table>
+
+
 
     
     <table align="center" bordercolor="green" border="1" cellspacing="0" cellspacing="10" width="300">

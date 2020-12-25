@@ -2,6 +2,6 @@ from django.urls import path
 from markets import views
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('market/<int:id>/', views.get_market_detail, name='market_detail'),
+    path('', views.HomeView.as_view(), name='market_list'),
+    path('market/<int:pk>/', views.MarketDetailView.as_view(), name='market_detail'),
 ]
