@@ -15,9 +15,10 @@ def dashboard(request):
 
 def get_toys(request):
     toys = Toy.objects.all()
-    toys = toys.filter(created_at__year=timezone.now().year)
+    # toys = toys.filter(created_at__year=timezone.now().year)
     toys = toys.select_related("user")
     toys = toys.prefetch_related("tags")
+    print(toys)
 
     return render(request, "toys.html", {"toys": toys})
 
