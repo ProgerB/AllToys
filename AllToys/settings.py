@@ -76,6 +76,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'AllToys.wsgi.application'
 AUTH_USER_MODEL = 'toys.User'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 

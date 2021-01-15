@@ -13,13 +13,13 @@ class ActiveObjectManager(models.Manager):
         return super().get_queryset().filter(is_active=True)
 
 
-# class BaseModel(models.Model):
-#     is_active = models.BooleanField(default=True)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#
-#     class Meta:
-#         abstract = True
+class BaseModel(models.Model):
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
 
 
 class Address(models.Model):
@@ -28,22 +28,28 @@ class Address(models.Model):
     zip_code = models.CharField(max_length=100, null=True, blank=True)
     country = models.CharField(max_length=100, null=True, blank=True)
 
+    class Meta:
+        verbose_name_plural = "Address"
+
     def __str__(self):
         return self.street
 
 
-class User(AbstractUser):
-    # is_active = models.BooleanField(default=True)
-    # first_name = models.ChasrField(max_length=50)
-    # last_name = models.CharField(max_length=50, null=True, blank=True)
-    # email = models.EmailField(max_length=50, null=True, blank=True)
+class User(AbstractUser, BaseModel):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
+    email = models.EmailField(max_length=50, null=True, blank=True)
     phone = models.CharField(max_length=50, null=True, blank=True)
     age = models.IntegerField(null=True, blank=True)
     address = models.OneToOneField(Address, on_delete=models.PROTECT, null=True, blank=True)
-    # objects = models.Manager()
-    # active_objects = ActiveObjectManager()
+
+    # class Meta:
+    #     db_table = "user"
+    #     verbose_name_plural = "Users"
 
     def __str__(self):
+        if self.last_name:
+            return f"{self.last_name} {self.first_name}"
         return self.first_name
 
 
@@ -53,6 +59,11 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+
+def photo_upload_path(instance, filename):
+    current_dt = timezone.now()
+    return f"toy-photos/{current_dt.strftime('%Y_%m')}/{uuid.uuid4().hex}/{filename}"
 
 
 class Toy(models.Model):
@@ -68,3 +79,9 @@ class Toy(models.Model):
 
     def __str__(self):
         return self.name
+
+    # def get_absolute_url(self):
+    #     return reverse("toys:toy_detail", args=(self.id,))
+    #
+    # class Meta:
+    #     verbose_name_plural = "Toys"
