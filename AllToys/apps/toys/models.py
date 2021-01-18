@@ -85,3 +85,24 @@ class Toy(models.Model):
     #
     # class Meta:
     #     verbose_name_plural = "Toys"
+
+
+class Employee(User):
+    experience = models.IntegerField(null=True, blank=True)
+    salary = models.IntegerField(null=True, blank=True)
+
+    class Meta:
+        verbose_name_plural = "Employees"
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
+
+class Company(models.Model):
+    company_name = models.CharField(max_length=64)
+    company_email = models.EmailField(max_length=50, null=False, blank=True)
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, null=True)
+    employees = models.ManyToManyField(Employee, related_name="Company")
+
+    def __str__(self):
+        return self.company_name

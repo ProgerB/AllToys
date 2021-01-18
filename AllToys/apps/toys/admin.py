@@ -5,7 +5,9 @@ from django.utils.translation import gettext_lazy as _
 from .forms import UserAdminForm
 from django.http import HttpResponseRedirect
 from django.utils.html import format_html
-from .services.send_weekly_report import send_weekly_toys_count
+from .services.send_weekly_report import send_weekly_toys_count, send_weekly_email_report,total_salary_expense_for_this_month
+from django.utils.translation import gettext_lazy as _
+
 
 
 class UserToysInline(admin.StackedInline):
@@ -15,34 +17,16 @@ class UserToysInline(admin.StackedInline):
     # fields = ("name",)
 
 
-def send_weekly_email_report(modeladmin, request, queryset):
-    if queryset.count() != 1:
-        modeladmin.message_user(request, "Multiple user selected, please choose one and only one.",
-                                messages.ERROR)
-        return HttpResponseRedirect(request.get_full_path())
-
-    user = queryset.first()
-    if not user.email:
-        modeladmin.message_user(request, "Selected user does not have email address",
-                                messages.ERROR)
-        return HttpResponseRedirect(request.get_full_path())
-
-    send_weekly_toys_count(user)
-
-    modeladmin.message_user(request, "Weekly report sent to user email: %s" % user.email, messages.INFO)
-    return HttpResponseRedirect(request.get_full_path())
-
-
 @admin.register(User)
 class UserAdmin(UserAdmin):
-    list_display = ("first_name", "last_name", "email", "phone")
+    list_display = ("first_name", "last_name", "email", "phone","password_change_link")
     actions_on_bottom = True
     empty_value_display = "-"
     form = UserAdminForm
-    search_fields = ("first_name", "last_name")
+    # search_fields = ("first_name", "last_name")
     readonly_fields = ("password_change_link",)
     fieldsets = (
-        (None, {'fields': ('username', 'password',)}),
+        (None, {'fields': ('username', 'password',"password_change_link",)}),
         (_('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'phone', 'age', 'address')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser'),
@@ -50,7 +34,7 @@ class UserAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     inlines = [UserToysInline]
-    actions = [send_weekly_toys_count]
+    actions = [send_weekly_email_report]
 
     def password_change_link(self, obj):
         return format_html(f'<a href="/admin/toys/user/{obj.pk}/password/">Change Password</a>')
@@ -82,4 +66,27 @@ class ToyAdmin(admin.ModelAdmin):
     inlines = [ToyTagsModelInline]
 
 
+class CompanyEmployeesModelInline(admin.TabularInline):
+    model = Company.employees.through
+    extra = 0
+    # fields = ("first_name",)
+
+
+@admin.register(Company)
+class CompanyAdmin(admin.ModelAdmin):
+    list_display = ("company_name", )
+    autocomplete_fields = ["employees"]
+    search_fields = ("first_name",)
+    inlines = [CompanyEmployeesModelInline]
+    actions = [total_salary_expense_for_this_month]
+
+
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    date_hierarchy = "created_at"
+    list_display = ("first_name", "last_name", "password_change_link")
+    search_fields = ("first_name",)
+
+    def password_change_link(self, obj):
+        return format_html(f'<a href="/admin/toys/user/{obj.pk}/password/">Change Password</a>')
 
